@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>login</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js" integrity="sha512-894YE6QWD5I59HgZOGReFYm4dnWc1Qt5NtvYSaNcOP+u1T9qYdvdihz0PPSiiqn/+/3e7Jo4EaG7TubfWGUrMQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.2.0/socket.io.js" integrity="sha512-WL6WGKMPBiM9PnHRYIn5YEtq0Z8XP4fkVb4qy7PP4vhmYQErJ/dySyXuFIMDf1eEYCXCrQrMJfkNwKc9gsjTjA==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+
+    <link rel="stylesheet" href="styles.css"></link>
+</head>
+<body>
+    <h1>Login</h1>
+    <form id="login">
+        <input type="text" id="loginUsername" placeholder="Nome de usuário">
+        <input type="text" id="loginSenha" placeholder="Senha">
+        <button type="submit">Enviar</button>
+    </form>
+    <br>
+    <h1>Register</h1>
+    <form id="register">
+        <input type="text" id="registerUsername" placeholder="Nome de usuário">
+        <input type="text" id="registerSenha" placeholder="Senha">
+        <button type="submit">Enviar</button>
+    </form>
+
+    <script type="text/javascript">
+    var socket = io('http://localhost:3000')
+    var loginObject
+    var registerObject
+
+    $('#register').submit(event=>{
+        event.preventDefault()
+
+        registerObject={}
+        var username=document.getElementById('registerUsername').value
+        var senha=document.getElementById('registerSenha').value
+
+        if(username.length && senha.length){
+            registerObject={
+                username: username,
+                senha: senha,
+            }
+            socket.emit('sendRegister', registerObject)
+        }
+    })
+
+    $('#login').submit(event=>{
+        event.preventDefault()
+
+        loginObject={}
+        var username=document.getElementById('loginUsername').value
+        var senha=document.getElementById('loginSenha').value
+
+        if(username.length && senha.length){
+            var loginObject={
+                username: username,
+                senha: senha,
+            }
+            socket.emit('sendLogin', loginObject)
+        }
+    })
+    </script>
+</body>
+</html>
